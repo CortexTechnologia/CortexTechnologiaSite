@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cortex Tecnologia | Softwares & IoT</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="iconeCortexTechnologia.png" type="image/x-icon">
+
+    <!-- Bootstrap Icons CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        cortex: {
+                            blue: '#d0e8f2',
+                            dark: '#050505',
+                            gray: '#111111',
+                            card: '#1a1a1a'
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-15px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #050505;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .glass-nav {
+            background: rgba(5, 5, 5, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(208, 232, 242, 0.05);
+        }
+
+        .neon-border {
+            border: 1px solid rgba(208, 232, 242, 0.1);
+            transition: all 0.4s ease;
+        }
+
+        .neon-border:hover {
+            border-color: #d0e8f2;
+            box-shadow: 0 10px 30px -10px rgba(208, 232, 242, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #ffffff, #d0e8f2, #8bb8d0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: textShine 4s linear infinite;
+        }
+
+        @keyframes textShine {
+            to {
+                background-position: 200% center;
+            }
+        }
+
+        /* Estilo customizado para o select de idiomas */
+        select.lang-selector {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d0e8f2' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 0.5rem center;
+            background-size: 1em;
+        }
+    </style>
+</head>
+
+<body class="antialiased font-sans selection:bg-cortex-blue selection:text-cortex-dark">
+
+    <!-- Navegação -->
+    <nav class="fixed w-full z-50 glass-nav transition-all duration-300 py-3">
+        <div class="container mx-auto px-6 md:px-12 flex justify-between items-center">
+            <a href="#" class="flex items-center gap-3">
+                <!-- ASPA CORRIGIDA AQUI NO ONERROR -->
+                <img src="iconeCortexTechnologia.png" alt="Cortex Ícone"
+                    class="w-10 h-10 rounded-full object-cover border border-cortex-blue/30"
+                    onerror="this.src='https://placehold.co/40x40/0a0a0a/d0e8f2?text=CT'">
+                <span class="text-xl font-bold tracking-wider text-cortex-blue hidden sm:block">CORTEX</span>
+            </a>
+
+            <div class="hidden md:flex space-x-8 text-sm font-medium text-gray-300 items-center">
+                <a href="#home" class="hover:text-cortex-blue transition-colors" data-i18n="navHome">Início</a>
+                <a href="#produtos" class="hover:text-cortex-blue transition-colors"
+                    data-i18n="navProducts">Produtos</a>
+                <a href="#web" class="hover:text-cortex-blue transition-colors" data-i18n="navWeb">Web Global</a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <!-- Seletor de Idiomas -->
+                <div class="relative">
+                    <i class="bi bi-translate absolute left-3 top-1/2 transform -translate-y-1/2 text-cortex-blue"></i>
+                    <select id="languageSelector"
+                        class="lang-selector bg-cortex-gray border border-cortex-blue/30 text-white text-sm rounded-full focus:ring-cortex-blue focus:border-cortex-blue block w-full pl-9 pr-8 py-2 cursor-pointer transition-colors hover:border-cortex-blue/60">
+                        <option value="pt">PT</option>
+                        <option value="en">EN</option>
+                        <option value="es">ES</option>
+                    </select>
+                </div>
+
+                <a href="#contato"
+                    class="hidden lg:block px-5 py-2 text-sm font-semibold rounded-full bg-transparent border border-cortex-blue text-cortex-blue hover:bg-cortex-blue hover:text-cortex-dark transition-all duration-300"
+                    data-i18n="navContact">
+                    Fale Conosco
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+        <div
+            class="absolute top-1/4 left-1/4 w-96 h-96 bg-cortex-blue opacity-5 rounded-full blur-[120px] mix-blend-screen animate-pulse-slow">
+        </div>
+
+        <div class="container mx-auto px-6 md:px-12 z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div class="text-center lg:text-left reveal">
+                <div
+                    class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cortex-blue/10 border border-cortex-blue/20 text-cortex-blue text-xs font-semibold tracking-wide uppercase mb-6">
+                    <i class="bi bi-cpu"></i> <span data-i18n="heroBadge">Tecnologia Corporativa</span>
+                </div>
+                <h1 class="text-4xl md:text-6xl font-extrabold mb-6 leading-tight">
+                    <span data-i18n="heroTitleP1">Inovação em Softwares &</span> <br />
+                    <span class="gradient-text" data-i18n="heroTitleP2">Automação Inteligente</span>
+                </h1>
+                <p class="text-lg text-gray-400 mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed"
+                    data-i18n="heroSubtitle">
+                    Desenvolvemos soluções sob medida para o futuro do seu negócio. Do controle de ponto por
+                    reconhecimento facial ao ecossistema IoT para residências, conectamos o mundo real ao digital.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                    <a href="#produtos"
+                        class="px-8 py-4 rounded-full bg-cortex-blue text-cortex-dark font-bold hover:bg-white transition-all shadow-[0_0_15px_rgba(208,232,242,0.3)] flex items-center justify-center gap-2">
+                        <span data-i18n="btnExplore">Explorar Soluções</span> <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="relative flex justify-center reveal">
+                <img src="CortexTechnologia.png" alt="Cortex Tecnologia Logo"
+                    class="w-full max-w-md rounded-2xl animate-float shadow-[0_0_50px_rgba(208,232,242,0.1)] border border-white/5"
+                    onerror="this.src='https://placehold.co/600x600/111/d0e8f2?text=Cortex+Tech'">
+            </div>
+        </div>
+    </section>
+
+    <!-- Produtos & Serviços Section -->
+    <section id="produtos" class="py-24 bg-cortex-gray relative border-t border-white/5">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="text-center max-w-3xl mx-auto mb-20 reveal">
+                <h2 class="text-sm font-bold tracking-widest text-cortex-blue uppercase mb-3"
+                    data-i18n="sectionProdBadge">Nosso Ecossistema</h2>
+                <h3 class="text-3xl md:text-4xl font-bold mb-6" data-i18n="sectionProdTitle">Softwares Próprios &
+                    Soluções Globais</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Produto: Chronos -->
+                <div class="bg-cortex-card p-8 rounded-2xl neon-border reveal group">
+                    <div
+                        class="w-16 h-16 rounded-xl bg-cortex-blue/10 flex items-center justify-center mb-6 group-hover:bg-cortex-blue group-hover:text-cortex-dark text-cortex-blue transition-all duration-300">
+                        <i class="bi bi-person-bounding-box text-3xl"></i>
+                    </div>
+                    <div class="flex items-center gap-2 mb-3">
+                        <h4 class="text-2xl font-bold text-white">Chronos</h4>
+                        <span
+                            class="text-[10px] bg-cortex-blue/20 text-cortex-blue px-2 py-0.5 rounded-full border border-cortex-blue/30"
+                            data-i18n="tagSaaS">SaaS</span>
+                    </div>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6" data-i18n="prodChronosDesc">
+                        Plataforma SaaS em nuvem para gestão inteligente de ponto e presença. Utiliza tecnologia de
+                        reconhecimento facial de alta precisão para garantir segurança, evitar fraudes e trazer
+                        praticidade máxima para o RH da sua empresa.
+                    </p>
+                    <ul class="text-xs text-gray-500 space-y-2">
+                        <li class="flex items-center gap-2"><i class="bi bi-check2 text-cortex-blue"></i> <span
+                                data-i18n="chronosFeat1">Reconhecimento Facial Anti-Spoofing</span></li>
+                        <li class="flex items-center gap-2"><i class="bi bi-check2 text-cortex-blue"></i> <span
+                                data-i18n="chronosFeat2">Gestão em Nuvem em Tempo Real</span></li>
+                    </ul>
+                </div>
+
+                <!-- Produto: GateOS -->
+                <div class="bg-cortex-card p-8 rounded-2xl neon-border reveal group" style="transition-delay: 100ms;">
+                    <div
+                        class="w-16 h-16 rounded-xl bg-cortex-blue/10 flex items-center justify-center mb-6 group-hover:bg-cortex-blue group-hover:text-cortex-dark text-cortex-blue transition-all duration-300">
+                        <i class="bi bi-house-gear text-3xl"></i>
+                    </div>
+                    <div class="flex items-center gap-2 mb-3">
+                        <h4 class="text-2xl font-bold text-white">GateOS</h4>
+                        <span
+                            class="text-[10px] bg-cortex-blue/20 text-cortex-blue px-2 py-0.5 rounded-full border border-cortex-blue/30"
+                            data-i18n="tagIoT">IoT</span>
+                    </div>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6" data-i18n="prodGateOSDesc">
+                        O sistema operacional definitivo para residências e condomínios. Uma plataforma IoT completa que
+                        integra controle de acesso, automação de iluminação, câmeras e comunicação com assistentes de
+                        voz em um único ecossistema.
+                    </p>
+                    <ul class="text-xs text-gray-500 space-y-2">
+                        <li class="flex items-center gap-2"><i class="bi bi-check2 text-cortex-blue"></i> <span
+                                data-i18n="gateFeat1">Integração com Assistentes Virtuais</span></li>
+                        <li class="flex items-center gap-2"><i class="bi bi-check2 text-cortex-blue"></i> <span
+                                data-i18n="gateFeat2">Controle de Acesso Biométrico</span></li>
+                    </ul>
+                </div>
+
+                <!-- Serviço: Web Global -->
+                <div id="web" class="bg-cortex-card p-8 rounded-2xl neon-border reveal group"
+                    style="transition-delay: 200ms;">
+                    <div
+                        class="w-16 h-16 rounded-xl bg-cortex-blue/10 flex items-center justify-center mb-6 group-hover:bg-cortex-blue group-hover:text-cortex-dark text-cortex-blue transition-all duration-300">
+                        <i class="bi bi-globe2 text-3xl"></i>
+                    </div>
+                    <div class="flex items-center gap-2 mb-3">
+                        <h4 class="text-2xl font-bold text-white" data-i18n="prodWebTitle">Web Global</h4>
+                        <span
+                            class="text-[10px] bg-cortex-blue/20 text-cortex-blue px-2 py-0.5 rounded-full border border-cortex-blue/30"
+                            data-i18n="tagWeb">Web Dev</span>
+                    </div>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6" data-i18n="prodWebDesc">
+                        Desenvolvemos Landing Pages e websites corporativos de alta performance voltados para o mercado
+                        internacional. Estruturas otimizadas para conversão, SEO técnico e suporte nativo a múltiplos
+                        idiomas.
+                    </p>
+                    <ul class="text-xs text-gray-500 space-y-2">
+                        <li class="flex items-center gap-2"><i class="bi bi-check2 text-cortex-blue"></i> <span
+                                data-i18n="webFeat1">Alta Conversão e Performance</span></li>
+                        <li class="flex items-center gap-2"><i class="bi bi-check2 text-cortex-blue"></i> <span
+                                data-i18n="webFeat2">Preparado para Escala Internacional</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfólio Section -->
+    <section id="portfolio" class="py-24 bg-[#020202] relative border-t border-white/5">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="text-center max-w-3xl mx-auto mb-20 reveal">
+                <h2 class="text-sm font-bold tracking-widest text-cortex-blue uppercase mb-3"
+                    data-i18n="sectionPortBadge">Casos de Sucesso</h2>
+                <h3 class="text-3xl md:text-4xl font-bold mb-6" data-i18n="sectionPortTitle">O Nosso Portfólio Web</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Projeto 1: Serra Imobiliária -->
+                <div class="bg-cortex-card rounded-2xl overflow-hidden neon-border reveal group">
+                    <div class="relative h-48 overflow-hidden bg-gray-900">
+                        <!-- INSTRUÇÃO: Substitui "img-serra.jpg" pelo nome exato da tua captura de ecrã -->
+                        <img src="siteserraimobiliaria.png" alt="Serra Imobiliária"
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                            onerror="this.src='https://placehold.co/600x400/111/d0e8f2?text=Serra+Imobiliária'">
+                        <div
+                            class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-colors duration-300">
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h4 class="text-xl font-bold text-white mb-2">Serra Imobiliária</h4>
+                        <p class="text-gray-400 text-sm mb-4" data-i18n="portSerraDesc">Landing page focada em conversão
+                            para corretora de imóveis de alto padrão.</p>
+                        <a href="https://serraimobiliaria.com.br" target="_blank"
+                            class="text-cortex-blue text-sm font-semibold hover:text-white transition-colors flex items-center gap-2">
+                            <span data-i18n="btnViewProject">Ver Projeto</span> <i class="bi bi-box-arrow-up-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Projeto 2: GS Locações e Festas -->
+                <div class="bg-cortex-card rounded-2xl overflow-hidden neon-border reveal group"
+                    style="transition-delay: 100ms;">
+                    <div class="relative h-48 overflow-hidden bg-gray-900">
+                        <!-- INSTRUÇÃO: Substitui "img-gs.jpg" pelo nome exato da tua captura de ecrã -->
+                        <img src="sitegs.png" alt="GS Locações e Festas"
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                            onerror="this.src='https://placehold.co/600x400/111/d0e8f2?text=GS+Locações'">
+                    </div>
+                    <div class="p-6">
+                        <h4 class="text-xl font-bold text-white mb-2">GS Locações e Festas</h4>
+                        <p class="text-gray-400 text-sm mb-4" data-i18n="portGSDesc">Catálogo web responsivo
+                            desenvolvido para gestão e exposição de artigos de festas e eventos.</p>
+                        <a href="https://gslocacoesefestas.netlify.app/index-fotos"
+                            class="text-cortex-blue text-sm font-semibold hover:text-white transition-colors flex items-center gap-2">
+                            <span data-i18n="btnViewProject">Ver Projeto</span> <i class="bi bi-box-arrow-up-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Projeto 3: Flamengo Mockup -->
+                <div class="bg-cortex-card rounded-2xl overflow-hidden neon-border reveal group"
+                    style="transition-delay: 200ms;">
+                    <div class="relative h-48 overflow-hidden bg-gray-900">
+                        <!-- INSTRUÇÃO: Substitui "img-flamengo.jpg" pelo nome exato da tua captura de ecrã -->
+                        <img src="siteflamengo.png" alt="Flamengo Concept"
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                            onerror="this.src='https://placehold.co/600x400/111/d0e8f2?text=Flamengo+Concept'">
+                    </div>
+                    <div class="p-6">
+                        <h4 class="text-xl font-bold text-white mb-2">Flamengo Sports UI</h4>
+                        <p class="text-gray-400 text-sm mb-4" data-i18n="portFlaDesc">Mockup de interface de alto
+                            desempenho para clube desportivo, com foco em experiência de utilizador.</p>
+                        <a href="https://siteflamengo.netlify.app"
+                            class="text-cortex-blue text-sm font-semibold hover:text-white transition-colors flex items-center gap-2">
+                            <span data-i18n="btnViewProject">Ver Projeto</span> <i class="bi bi-box-arrow-up-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contato" class="bg-[#020202] pt-16 pb-8 border-t border-white/5 relative">
+        <div class="container mx-auto px-6 md:px-12 relative z-10">
+            <div
+                class="flex flex-col md:flex-row justify-between items-center md:items-start gap-8 mb-12 border-b border-gray-800 pb-12">
+                <div class="text-center md:text-left">
+                    <a href="#" class="flex items-center justify-center md:justify-start gap-3 mb-4">
+                        <img src="iconeCortexTechnologia.png" alt="Cortex Ícone" class="w-8 h-8 rounded-full"
+                            onerror="this.src='https://placehold.co/32x32/111/d0e8f2?text=CT'">
+                        <span class="text-xl font-bold tracking-wider text-cortex-blue">CORTEX</span>
+                    </a>
+                    <p class="text-gray-500 text-sm max-w-xs" data-i18n="footerDesc">
+                        Tecnologia de ponta em softwares proprietários e infraestrutura web global.
+                    </p>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-6 text-center md:text-right">
+                    <div>
+                        <h5 class="text-white font-bold mb-3 text-sm" data-i18n="footerContact">Contato</h5>
+                        <p class="text-gray-400 text-sm flex items-center justify-center md:justify-end gap-2 mb-2">
+                            <i class="bi bi-envelope text-cortex-blue"></i> cortextechnologia@hotmail.com
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row justify-between items-center text-xs text-gray-600">
+                <p data-i18n="footerRights">&copy; 2026 Cortex Tecnologia. Todos os direitos reservados.</p>
+                <div class="flex gap-4 mt-4 md:mt-0">
+                    
+                    <a href="https://github.com/CortexTechnologia"></a><i class="bi bi-github text-lg hover:text-cortex-blue cursor-pointer transition-colors"></i></a>
+                    
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Dicionário e Lógica de Tradução (i18n) -->
+    <script>
+        const translations = {
+            pt: {
+                navHome: "Início",
+                navProducts: "Produtos",
+                navWeb: "Web Global",
+                navContact: "Fale Conosco",
+                heroBadge: "Tecnologia Corporativa",
+                heroTitleP1: "Inovação em Softwares &",
+                heroTitleP2: "Automação Inteligente",
+                heroSubtitle: "Desenvolvemos soluções sob medida para o futuro do seu negócio. Do controle de ponto por reconhecimento facial ao ecossistema IoT para residências, conectamos o mundo real ao digital.",
+                btnExplore: "Explorar Soluções",
+                sectionProdBadge: "Nosso Ecossistema",
+                sectionProdTitle: "Softwares Próprios & Soluções Globais",
+                tagSaaS: "SaaS",
+                prodChronosDesc: "Plataforma SaaS em nuvem para gestão inteligente de ponto e presença. Utiliza tecnologia de reconhecimento facial de alta precisão para garantir segurança, evitar fraudes e trazer praticidade máxima para o RH da sua empresa.",
+                chronosFeat1: "Reconhecimento Facial Anti-Spoofing",
+                chronosFeat2: "Gestão em Nuvem em Tempo Real",
+                tagIoT: "IoT",
+                prodGateOSDesc: "O sistema operacional definitivo para residências e condomínios. Uma plataforma IoT completa que integra controle de acesso, automação de iluminação, câmeras e comunicação com assistentes de voz em um único ecossistema.",
+                gateFeat1: "Integração com Assistentes Virtuais",
+                gateFeat2: "Controle de Acesso Biométrico",
+                prodWebTitle: "Web Global",
+                tagWeb: "Web Dev",
+                prodWebDesc: "Desenvolvemos Landing Pages e websites corporativos de alta performance voltados para o mercado internacional. Estruturas otimizadas para conversão, SEO técnico e suporte nativo a múltiplos idiomas.",
+                webFeat1: "Alta Conversão e Performance",
+                webFeat2: "Preparado para Escala Internacional",
+                footerDesc: "Tecnologia de ponta em softwares proprietários e infraestrutura web global.",
+                footerContact: "Contato",
+                footerRights: "© 2026 Cortex Technologia. Todos os direitos reservados.",
+                sectionPortBadge: "Casos de Sucesso",
+                sectionPortTitle: "O Nosso Portfólio Web",
+                portSerraDesc: "Landing page focada em conversão para corretora de imóveis de alto padrão.",
+                portGSDesc: "Catálogo web responsivo desenvolvido para gestão e exposição de artigos de festas e eventos.",
+                portFlaDesc: "Mockup de interface de alto desempenho para clube desportivo, com foco em experiência do utilizador.",
+                btnViewProject: "Ver Projeto",
+            },
+            en: {
+                navHome: "Home",
+                navProducts: "Products",
+                navWeb: "Global Web",
+                navContact: "Contact Us",
+                heroBadge: "Corporate Technology",
+                heroTitleP1: "Innovation in Software &",
+                heroTitleP2: "Smart Automation",
+                heroSubtitle: "We develop custom solutions for the future of your business. From facial recognition time tracking to IoT ecosystems for homes, we connect the real world to the digital.",
+                btnExplore: "Explore Solutions",
+                sectionProdBadge: "Our Ecosystem",
+                sectionProdTitle: "Proprietary Software & Global Solutions",
+                tagSaaS: "SaaS",
+                prodChronosDesc: "Cloud SaaS platform for smart time and attendance management. It uses high-precision facial recognition technology to ensure security, prevent fraud, and bring maximum convenience to your company's HR.",
+                chronosFeat1: "Anti-Spoofing Facial Recognition",
+                chronosFeat2: "Real-Time Cloud Management",
+                tagIoT: "IoT",
+                prodGateOSDesc: "The ultimate operating system for homes and condos. A complete IoT platform that integrates access control, lighting automation, cameras, and voice assistant communication in a single ecosystem.",
+                gateFeat1: "Virtual Assistant Integration",
+                gateFeat2: "Biometric Access Control",
+                prodWebTitle: "Global Web",
+                tagWeb: "Web Dev",
+                prodWebDesc: "We develop high-performance Landing Pages and corporate websites aimed at the international market. Structures optimized for conversion, technical SEO, and native multi-language support.",
+                webFeat1: "High Conversion and Performance",
+                webFeat2: "Ready for International Scaling",
+                footerDesc: "Cutting-edge technology in proprietary software and global web infrastructure.",
+                footerContact: "Contact",
+                footerRights: "© 2026 Cortex Technologia. All rights reserved.",
+                sectionPortBadge: "Success Stories",
+                sectionPortTitle: "Our Web Portfolio",
+                portSerraDesc: "High-conversion landing page developed for a premium real estate agency.",
+                portGSDesc: "Responsive web catalog designed for the management and display of party and event rentals.",
+                portFlaDesc: "High-performance interface mockup for a sports club, focused on user experience.",
+                btnViewProject: "View Project"
+            },
+            es: {
+                navHome: "Inicio",
+                navProducts: "Productos",
+                navWeb: "Web Global",
+                navContact: "Contáctenos",
+                heroBadge: "Tecnología Corporativa",
+                heroTitleP1: "Innovación en Software y",
+                heroTitleP2: "Automatización Inteligente",
+                heroSubtitle: "Desarrollamos soluciones a medida para el futuro de su negocio. Desde el control de asistencia por reconocimiento facial hasta ecosistemas IoT para hogares, conectamos el mundo real con el digital.",
+                btnExplore: "Explorar Soluciones",
+                sectionProdBadge: "Nuestro Ecosistema",
+                sectionProdTitle: "Software Propio y Soluciones Globales",
+                tagSaaS: "SaaS",
+                prodChronosDesc: "Plataforma SaaS en la nube para la gestión inteligente del tiempo y la asistencia. Utiliza tecnología de reconocimiento facial de alta precisión para garantizar la seguridad, prevenir fraudes y brindar la máxima comodidad a los recursos humanos de su empresa.",
+                chronosFeat1: "Reconocimiento Facial Anti-Spoofing",
+                chronosFeat2: "Gestión en la Nube en Tiempo Real",
+                tagIoT: "IoT",
+                prodGateOSDesc: "El sistema operativo definitivo para hogares y condominios. Una plataforma IoT completa que integra control de acceso, automatización de iluminación, cámaras y comunicación con asistentes de voz en un solo ecosistema.",
+                gateFeat1: "Integración con Asistentes Virtuales",
+                gateFeat2: "Control de Acceso Biométrico",
+                prodWebTitle: "Web Global",
+                tagWeb: "Desarrollo Web",
+                prodWebDesc: "Desarrollamos Landing Pages y sitios web corporativos de alto rendimiento dirigidos al mercado internacional. Estructuras optimizadas para conversión, SEO técnico y soporte nativo para múltiples idiomas.",
+                webFeat1: "Alta Conversión y Rendimiento",
+                webFeat2: "Listo para Escalar a Nivel Internacional",
+                footerDesc: "Tecnología de punta en software propietario e infraestructura web global.",
+                footerContact: "Contacto",
+                footerRights: "© 2026 Cortex Technologia. Todos los derechos reservados.",
+                sectionPortBadge: "Casos de Éxito",
+                sectionPortTitle: "Nuestro Portafolio Web",
+                portSerraDesc: "Landing page enfocada en conversión para agencia inmobiliaria de alto nivel.",
+                portGSDesc: "Catálogo web responsivo diseñado para la gestión y exposición de artículos para fiestas y eventos.",
+                portFlaDesc: "Mockup de interfaz de alto rendimiento para club deportivo, centrado en la experiencia del usuario.",
+                btnViewProject: "Ver Proyecto"
+            }
+        };
+
+        function setLanguage(lang) {
+            const elements = document.querySelectorAll('[data-i18n]');
+            elements.forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    // Se for um input/placeholder, trata diferente, senão muda o textContent
+                    if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+                        element.placeholder = translations[lang][key];
+                    } else {
+                        element.textContent = translations[lang][key];
+                    }
+                }
+            });
+            // Salvar preferencia
+            localStorage.setItem('cortexLang', lang);
+            document.documentElement.lang = lang;
+        }
+
+        // Listener do Select
+        document.getElementById('languageSelector').addEventListener('change', (e) => {
+            setLanguage(e.target.value);
+        });
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', () => {
+            // Verifica idioma salvo ou pega do navegador
+            const savedLang = localStorage.getItem('cortexLang');
+            const browserLang = navigator.language.substring(0, 2);
+            let defaultLang = 'pt';
+
+            if (savedLang && translations[savedLang]) {
+                defaultLang = savedLang;
+            } else if (translations[browserLang]) {
+                defaultLang = browserLang;
+            }
+
+            document.getElementById('languageSelector').value = defaultLang;
+            setLanguage(defaultLang);
+        });
+
+        // Animação de Scroll
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 100;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        reveal();
+    </script>
+</body>
+
+</html>
